@@ -54,7 +54,21 @@ window.onload = function() {
 }
 
 function isMatchFinished(){
+
+
     return clicked.length>8;
+}
+
+
+function areSame(){
+    var t=0;
+    var a=arguments;
+    for(i=0;i<a.length;i++){
+        if(t!=0 && t!=a[i].checked)return false;
+        t=a[i];
+    }
+    return true;
+
 }
 
 function resetTicTacToe(){
