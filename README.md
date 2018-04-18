@@ -12,18 +12,18 @@
 
 ## Product backlog
 * *As* a player *I want* to play Tic-Tac-Toe against the computer *so that* I can entertain myself.
-  * **Acceptance criteria** **finished**
+  * **Acceptance criteria** *finished*
     * The user and the computer take turns playing. ***done***
     * The first player to achieve three-in-a-row wins. ***done***
     * Three-in-a-row can be horizontal, vertical or diagonal. ***done***
     * When the game ends a new game can be started. ***done***
-    * The achieved score is registered. ***done - score is displayed at the end game dialog ***
+    * The achieved score is registered.  *** done ***
 * *As* a player *I want* my top scores to be registered *so that* I can review my accomplishments.   
-  * **Acceptance criteria**
+  * **Acceptance criteria** *finished*
     * The score is calculated based on the lowest number of moves combined with the duration of the game.
-      (you don't get points when you lose, and you can assume that the time taken by the computer is negligible)
-    * Only the top 10 scores are kept.
-    * The scores can be tracked in memory, they don't need to be persisted to a data store.
+      (you don't get points when you lose, and you can assume that the time taken by the computer is negligible) **done**
+    * Only the top 10 scores are kept. **done**
+    * The scores can be tracked in memory, they don't need to be persisted to a data store. **done**
 * *As* a player *I want* to register my name *so that* others can see who achieved what score.
   * **Acceptance criteria**
     * The user can enter their name when the game starts.
