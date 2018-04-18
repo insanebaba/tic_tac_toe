@@ -2,11 +2,14 @@ var boxes, player;
 var clicked = [];
 var player_checked = [];
 var com_checked = [];
-
+var topScores={};
 var initTime = new Date();
+var scoreList;
+
 window.onload = function () {
 	//prepare Dialog box
 	var dialog = document.querySelector('dialog');
+	scoreList=document.getElementById("top-scores");
 	if (!dialog.showModal) {
 		dialogPolyfill.registerDialog(dialog);
 	}
@@ -24,6 +27,8 @@ window.onload = function () {
 
 	//select all tictactoe elements
 	boxes = document.getElementsByClassName('tictactoe');
+
+    fetchTopScores();
 
 	// is this player's turn ?
 	player = true;
@@ -52,6 +57,7 @@ window.onload = function () {
 					dialog.querySelector('p#score').innerHTML = "Good Job!! You won.  Your score:" + score;
 				} else
 					dialog.querySelector('p#score').innerHTML = "Bad luck!!";
+				fetchTopScores();
 				dialog.showModal();
 			}
 
@@ -121,4 +127,39 @@ function sendScore(score) {
       }
   }
   http.send(params);
+}
+
+//Get Top scores from server
+
+//fetch Top scores
+function fetchTopScores() {
+  var http = new XMLHttpRequest();
+  var url = "topScores";
+  http.open("GET", url, true);
+
+  //Send the proper header information along with the request
+  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+  http.onreadystatechange = function() {//Call a function when the state changes.
+      if(http.readyState == 4 && http.status == 200) {
+          //Update the score list here
+          topScores=JSON.parse(this.response);
+          renderTopScores();
+      }
+  }
+  http.send();
+}
+
+function renderTopScores(){
+    while( scoreList.firstChild ){
+      scoreList.removeChild( scoreList.firstChild );
+    }
+
+    for(var score in topScores["scores"]){
+        var entry = document.createElement('li');
+        var count=parseInt(score)+1;
+        entry.appendChild(document.createTextNode(count+".\t"+topScores["scores"][score]));
+        entry.className ="mdl-list__item mdl-list__item_"+(count%2>0?"odd":"even")
+        scoreList.appendChild(entry);
+    }
 }

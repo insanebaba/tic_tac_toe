@@ -1,16 +1,17 @@
 package nl.trifork.tictactoe;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 @RestController
 public class GameLogicController {
 
-    TreeSet<ScoreEntity> scores = new TreeSet<>((s1, s2) -> s2.getScore().compareTo(s1.getScore()));
+    private TreeSet<ScoreEntity> scores = new TreeSet<>((s1, s2) -> s2.getScore().compareTo(s1.getScore()));
 
     @PostMapping("/executeTurn")
     public String move(@RequestParam boolean turn, @RequestParam int column, @RequestParam int row) {
@@ -20,9 +21,19 @@ public class GameLogicController {
     @PostMapping("/addScore")
     public boolean addScore(@RequestParam(required = false) String username, @RequestParam int score) {
         boolean result = scores.add(new ScoreEntity(username, LocalDateTime.now(), score));
-        while(scores.size()>10){
+        while (scores.size() > 10) {
             scores.pollLast();
         }
         return result;
+    }
+
+    @GetMapping("/topScores")
+    @ResponseBody
+    public Map<String, List<Integer>> topScores() {
+        return scores.stream().map(ScoreEntity::getScore).collect(Collectors.groupingBy(s->"scores"));
+    }
+
+    public TreeSet<ScoreEntity> getScores() {
+        return scores;
     }
 }
