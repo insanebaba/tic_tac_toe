@@ -1,44 +1,35 @@
 package nl.trifork.tictactoe;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GameLogicControllerTest {
 
-    @Before
-    public void setUp() throws Exception {
-    }
-
     @InjectMocks
     private GameLogicController gameLogicController;
 
-    @After
-    public void tearDown() throws Exception {
-    }
 
 
     @Test
-    public void move() {
-        gameLogicController.move(true,2,3);
-
+    public void moveReturnsExpectedMessage() {
+        String result = gameLogicController.move(true, 2, 3);
+        assertEquals(result, String.format("Turn executed for player '%b', on column '%d' and row '%d'", true, 2, 3));
     }
 
     @Test
     public void addScore() {
         gameLogicController.addScore("sampleUserName",332);
-        assertTrue(gameLogicController.getScores().first().getUsername().equals("sampleUserName"));
-        assertTrue(gameLogicController.getScores().first().getScore().equals(332));
+        assertEquals("sampleUserName", gameLogicController.getScores().first().getUsername());
+        assertEquals(332, (int) gameLogicController.getScores().first().getScore());
     }
 
     @Test
@@ -47,8 +38,8 @@ public class GameLogicControllerTest {
         gameLogicController.addScore("sampleUserName",score);
         Map<String, List<Integer>> map = gameLogicController.topScores();
         assertTrue(map.containsKey("scores"));
-        assertTrue(map.get("scores").size()==1);
-        assertTrue(map.get("scores").get(0)==score);
+        assertEquals(1, map.get("scores").size());
+        assertEquals((int) map.get("scores").get(0), score);
     }
 
 
@@ -58,7 +49,7 @@ public class GameLogicControllerTest {
             gameLogicController.addScore("sampleUserName",i*50);
         Map<String, List<Integer>> map = gameLogicController.topScores();
         assertTrue(map.containsKey("scores"));
-        assertTrue(map.get("scores").size()==10);
+        assertEquals(10, map.get("scores").size());
         assertTrue(map.get("scores").get(0)==1000);
         assertTrue(map.get("scores").get(1)==19*50);
 
